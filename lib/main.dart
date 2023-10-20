@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:prueba_tecnica_bondy/views/weather_view.dart';
+import 'package:prueba_tecnica_bondy/views/WeatherPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const WeatherView(),
+      home: const WheatherPage(),
     );
   }
 }
