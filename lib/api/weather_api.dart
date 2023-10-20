@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class WeatherApi {
   static const endpoint = "https://api.open-meteo.com/v1/forecast";
 
-  Future<Weather?> getWeather(double lat, double lon) async {
+  Future<WeatherExter?> getWeather(double lat, double lon) async {
     try {
       final response = await http.get(
         Uri.parse(endpoint).replace(queryParameters: {
@@ -22,7 +22,7 @@ class WeatherApi {
 
       if (response.statusCode == 200) {
         final results = jsonDecode(response.body);
-        return Weather.fromJson(results['current_weather']);
+        return WeatherExter.fromJson(results['current_weather']);
       }
 
       return null;

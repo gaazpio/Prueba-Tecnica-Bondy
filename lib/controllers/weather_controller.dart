@@ -11,7 +11,7 @@ class WeatherController extends GetxController {
 
   final RxList<Location> searchLocations = RxList.empty();
   final Rx<Location?> locationSelected = Rx<Location?>(null);
-  final Rx<Weather?> currentWeather = Rx<Weather?>(null);
+  final Rx<WeatherExter?> currentWeather = Rx<WeatherExter?>(null);
 
   TextEditingController input = TextEditingController();
 

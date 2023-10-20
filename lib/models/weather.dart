@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class Weather extends Equatable {
+class WeatherExter extends Equatable {
   final double temperature;
   final double windSpeed;
   final int windDirection;
   final DateTime time;
 
-  Weather.fromJson(Map<String, dynamic> json)
+  WeatherExter.fromJson(Map<String, dynamic> json)
       : temperature = json['temperature'],
         windSpeed = json['windspeed'],
         windDirection = json['winddirection'],

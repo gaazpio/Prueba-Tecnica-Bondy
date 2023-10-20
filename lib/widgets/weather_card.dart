@@ -3,7 +3,7 @@ import 'package:prueba_tecnica_bondy/models/location.dart';
 import 'package:prueba_tecnica_bondy/models/weather.dart';
 
 class WeatherInfoCard extends StatelessWidget {
-  final Weather weatherData;
+  final WeatherExter weatherData;
   final Location locationData;
 
   const WeatherInfoCard({

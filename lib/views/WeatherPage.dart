@@ -1,9 +1,9 @@
+import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:prueba_tecnica_bondy/controllers/weather_controller.dart';
-import 'package:prueba_tecnica_bondy/widgets/weather_card.dart';
+import 'package:http/http.dart' as http;
 
 class WheatherPage extends StatefulWidget {
   const WheatherPage({Key? key}) : super(key: key);
@@ -14,7 +14,53 @@ class WheatherPage extends StatefulWidget {
 
 class _WheatherPageState extends State<WheatherPage> {
   String Ciudad = "";
+  String dataInfo="";
 
+  double WindSpeed=0.0;
+  int WindSpeedEntero=0;
+
+  int humedad=0;
+  int nubes=0;
+  int estado=0;
+
+  String mainWeather="";
+
+  double temperatura=0;
+  int temperaturaEntero=0;
+
+void conectarApi(double latitud, double longitud) async{
+  final url = "https://api.openweathermap.org/data/2.5/weather?lat=$latitud&lon=$longitud&appid=14a1ebdfd8a21d21210752adf9826abf";
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    print("CONECATADA CORRECTAMENTE");
+    final data = json.decode(response.body);
+
+    setState(() {
+      WindSpeed=data['wind']['speed']* 3.6;
+      WindSpeedEntero=WindSpeed.toInt();
+
+      dataInfo=data.toString();
+      humedad=data['main']['humidity'];
+
+      nubes=data['clouds']['all'];
+
+      temperatura=data['main']['temp']-273.15;
+      temperaturaEntero=temperatura.toInt();
+
+      dynamic weatherData = data['weather'][0];
+       mainWeather = weatherData['main'];
+
+      //print(dataInfo);
+
+    });
+
+  }
+  else {
+    // Maneja errores de solicitud.
+    print("Error al obtener datos meteorológicos: ${response.statusCode}");
+  }
+}
   @override
   void initState() {
     obtenerLocalizacionActual();
@@ -26,47 +72,44 @@ class _WheatherPageState extends State<WheatherPage> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks.toString());
     setState(() {
-      Ciudad = placemarks[0].subAdministrativeArea.toString();
+      Ciudad = placemarks[0].locality.toString();
+      conectarApi(position.latitude,position.longitude);
     });
   }
 
-  void obtenerDatosDeLaCiudad() {}
 
   @override
   Widget build(BuildContext context) {
     Color colorAppLet = Color.fromRGBO(68, 44, 64, 1.0);
     Color colorFondo = Color.fromRGBO(224, 198, 216, 1.0);
-    final weatherController = Get.put(WeatherController());
 
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double appBarHeight = AppBar().preferredSize.height;
-    double screenHeightWithoutAppBar =
-        MediaQuery.of(context).size.height - appBarHeight;
+    double screenHeightWithoutAppBar = MediaQuery.of(context).size.height - appBarHeight;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorFondo,
         elevation: 0,
-        toolbarHeight: 70,
+        toolbarHeight: 80,
         title: Row(
           children: [
-            SizedBox(width: 40),
             Icon(
               Icons.location_on,
               size: 32,
               color: colorAppLet,
             ),
             SizedBox(width: 8), // Espacio entre el ícono y el texto
-            Text(
+            AutoSizeText(
               '$Ciudad',
+              textAlign: TextAlign.center,maxLines: 1,
               style: TextStyle(
                   color: colorAppLet,
-                  fontSize: 30,
+                  fontSize: 21,
                   fontWeight: FontWeight.bold),
             ),
           ],
@@ -108,16 +151,16 @@ class _WheatherPageState extends State<WheatherPage> {
             Center(
               child: Column(
                 children: [
-                  Text(
-                    "22",
+                 Text(
+                    "${temperaturaEntero}°",
                     style: TextStyle(
-                        fontSize: 280,
+                        fontSize: 200,
                         fontWeight: FontWeight.bold,
                         color: colorAppLet),
                   ),
                   Row(children: [
                     SizedBox(width: 100),
-                    Text("Cloudy",
+                    Text("${mainWeather}",
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
@@ -128,7 +171,8 @@ class _WheatherPageState extends State<WheatherPage> {
                       size: 40,
                       color: colorAppLet,
                     ),
-                  ]),
+                  ]
+                  ),
                 ],
               ),
             ),
@@ -150,18 +194,18 @@ class _WheatherPageState extends State<WheatherPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.umbrella,
+                            Icons.cloud,
                             size: 20,
                             color: colorAppLet,
                           ),
                           SizedBox(height: 8),
-                          Text("30%",
+                          Text("${nubes}%",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                   color: colorAppLet)),
                           SizedBox(height: 8),
-                          Text("Precipitation",
+                          Text("Clouds",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
@@ -176,7 +220,7 @@ class _WheatherPageState extends State<WheatherPage> {
                             color: colorAppLet,
                           ),
                           SizedBox(height: 8),
-                          Text("20%",
+                          Text("${humedad}%",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -197,7 +241,7 @@ class _WheatherPageState extends State<WheatherPage> {
                             color: colorAppLet,
                           ),
                           SizedBox(height: 8),
-                          Text("12km/h",
+                          Text("${WindSpeedEntero} km/h",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
