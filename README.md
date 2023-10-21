@@ -1,14 +1,32 @@
-# Project Enhancement: Weather UI with State Transitions and Animated Icons
+PRUEBA TECNICA REALIZADA POR DAVID GAZPIO 
 
-## Overview
+ESTO SON LAS LIBRERIAS QUE HE USADO
 
-Based on the starter project located at [GitLab Repository](https://gitlab.com/alex6395030/prueba-tecnica), we aim to recreate the attached weather interface to display real-time weather information. This includes implementing transition animations for the change in state of the displayed data. Furthermore, the icon representing the current weather condition (sunny, cloudy, rainy, etc.) should also be animated when entering and exiting the screen.
 
-## Objectives
 
-1. **Replicate Attached Weather UI**: Create a layout that resembles the attached interface for showing weather data.
-2. **State Transition Animations**: Implement smooth transitions for updating the weather information.
-3. **Icon Animation**: Add entry and exit animations for the weather icon.
+cupertino_icons: ^1.0.2
+http: ^1.1.0
+equatable: ^2.0.5
+geolocator: ^7.0.3
+geocoding: ^2.1.1
+weather: ^3.1.1
+auto_size_text: ^3.0.0
+animated_splash_screen: ^1.3.0
+intl: ^0.17.0
 
-## UI
-![UI to copy](readme_assets/ui.png)
+HTTP, para conectarme con la API
+
+geolocator, geocoding : para las cordenadas y usar la ubicacion , tambien he pedido permiso en el android.manifest para la ubicacion
+
+weater: para los datos tiempo,
+
+auto_size_text: para ajustar el texto de la appbar por si es demasiado grande
+
+animated_splash_screen: para las animaciones
+
+intl : para obtener el dia y la hora en string
+
+Espero que os haya gustado mi disempeño en la prueba tecnica, lo he intentado hacer lo mejor posible.
+
+Muchas gracias, quedo a la espera de su respuesta.
+
